@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MusicHub - Download Your Favorite Music</title>
+    <title>MusicHub - Play and Download Music</title>
     <style>
         * {
             margin: 0;
@@ -66,15 +66,36 @@
             margin-bottom: 10px;
         }
 
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            background: #007BFF;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+
         .download-btn {
             background: #4CAF50;
             color: white;
             border: none;
-            padding: 10px 15px;
+            padding: 8px 12px;
             border-radius: 5px;
             cursor: pointer;
-            text-decoration: none;
             font-size: 14px;
+            text-decoration: none;
         }
 
         .download-btn:hover {
@@ -86,7 +107,7 @@
     <div class="container">
         <header>
             <h1>MusicHub</h1>
-            <p>Download Your Favorite Music</p>
+            <p>Play and Download Your Favorite Music</p>
         </header>
 
         <div class="music-grid" id="musicGrid"></div>
@@ -120,21 +141,36 @@
             },
         ];
 
-        function createMusicCard(music) {
+        function createMusicCard(music, index) {
             return `
                 <div class="music-card">
                     <img src="${music.image}" alt="${music.title}" class="album-art">
                     <h3 class="song-title">${music.title}</h3>
                     <p class="artist">${music.artist}</p>
+                    <div class="controls">
+                        <button class="btn" onclick="playMusic(${index})">Play ▶️</button>
+                        <button class="btn" onclick="pauseMusic(${index})">Pause ⏸</button>
+                    </div>
                     <a href="${music.audio}" download="${music.title}" class="download-btn">Download</a>
+                    <audio id="audio-${index}" src="${music.audio}"></audio>
                 </div>
             `;
         }
 
         const musicGrid = document.getElementById("musicGrid");
-        musicData.forEach(music => {
-            musicGrid.innerHTML += createMusicCard(music);
+        musicData.forEach((music, index) => {
+            musicGrid.innerHTML += createMusicCard(music, index);
         });
+
+        function playMusic(index) {
+            const audio = document.getElementById(`audio-${index}`);
+            audio.play();
+        }
+
+        function pauseMusic(index) {
+            const audio = document.getElementById(`audio-${index}`);
+            audio.pause();
+        }
     </script>
 </body>
 </html>
